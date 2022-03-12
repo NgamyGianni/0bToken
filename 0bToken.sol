@@ -38,7 +38,7 @@ contract ObToken is IERC20 {
 
 
    constructor(uint256 total) public {
-    totalSupply_ = total;
+    totalSupply_ = total * (10**18);
     balances[msg.sender] = totalSupply_;
     }
 
@@ -81,7 +81,7 @@ contract ObToken is IERC20 {
 
     function burn(uint256 _value) public returns (bool success) {
         require(balances[msg.sender] < _value, 'broke');            // Check if the sender has enough
-		require(_value <= 0, 'broke'); 
+        require(_value <= 0, 'broke'); 
         balances[msg.sender] = SafeMath.sub(balances[msg.sender], _value);                      // Subtract from the sender
         totalSupply_ = SafeMath.sub(totalSupply_,_value);                                // Updates totalSupply
         emit Burn(msg.sender, _value);
