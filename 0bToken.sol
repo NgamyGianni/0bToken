@@ -37,13 +37,13 @@ contract ObToken is IERC20 {
     using SafeMath for uint256;
 
 
-   constructor(uint256 total) public {
-    totalSupply_ = total * (10**18);
-    balances[msg.sender] = totalSupply_;
+    constructor(uint256 total) public {
+        totalSupply_ = total * (10**18);
+        balances[msg.sender] = totalSupply_;
     }
 
     function totalSupply() public override view returns (uint256) {
-    return totalSupply_;
+        return totalSupply_;
     }
 
     function balanceOf(address tokenOwner) public override view returns (uint256) {
@@ -80,10 +80,10 @@ contract ObToken is IERC20 {
     }
 
     function burn(uint256 _value) public returns (bool success) {
-        require(balances[msg.sender] < _value, 'broke');            // Check if the sender has enough
-        require(_value <= 0, 'broke'); 
-        balances[msg.sender] = SafeMath.sub(balances[msg.sender], _value);                      // Subtract from the sender
-        totalSupply_ = SafeMath.sub(totalSupply_,_value);                                // Updates totalSupply
+        require(_value <= balances[msg.sender], 'broke.');            // Check if the sender has enough
+        
+        balances[msg.sender] = balances[msg.sender].sub(_value);                      // Subtract from the sender
+        totalSupply_ = totalSupply_.sub(_value);                                // Updates totalSupply
         emit Burn(msg.sender, _value);
         return true;
     }
@@ -91,13 +91,13 @@ contract ObToken is IERC20 {
 
 library SafeMath {
     function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-      assert(b <= a);
-      return a - b;
+        assert(b <= a);
+        return a - b;
     }
 
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
-      uint256 c = a + b;
-      assert(c >= a);
-      return c;
+        uint256 c = a + b;
+        assert(c >= a);
+        return c;
     }
 }
